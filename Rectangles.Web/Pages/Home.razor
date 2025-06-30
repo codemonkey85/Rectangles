@@ -4,25 +4,28 @@
     Rectangles
 </PageTitle>
 
-<h1>
+<MudText Typo="@Typo.h3">
     Rectangles
-</h1>
+</MudText>
 
-<InputNumber @bind-Value="Number"
-             @bind-Value:after="GetRectangleInfo" />
+<MudNumericField @bind-Value="Number"
+                 @bind-Value:after="@GetRectangleInfo"
+                 Label="Enter a number to find rectangle dimensions"
+                 Variant="@Variant.Outlined"
+                 Margin="@Margin.Dense" />
 
 @if (NumberRectangleInfo is { IsRectangle: false })
 {
-    <h2>
+    <MudText Typo="@Typo.h2">
         @Number cannot form any rectangles
-    </h2>
+    </MudText>
 }
 else if (NumberRectangleInfo is { IsRectangle: true })
 {
     <div class="mt-3">
-        <h2>
+        <MudText Typo="@Typo.h2">
             @Number can form the following rectangles:
-        </h2>
+        </MudText>
         <ul>
             @foreach (var rectangle in NumberRectangleInfo.Value.Dimensions)
             {
