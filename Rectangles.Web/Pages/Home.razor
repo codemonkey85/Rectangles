@@ -6,7 +6,7 @@
 
 <MudText Typo="@Typo.h4"
          GutterBottom>
-    Rectangle Dimension Finder
+    Rectangles
 </MudText>
 
 <MudNumericField @bind-Value="@Number"
@@ -23,7 +23,7 @@
 {
     <MudAlert Severity="@Severity.Warning"
               Elevation="1">
-        @Number cannot form any rectangles with sides ≥ 2 and unequal.
+        @Number cannot form any rectangles.
     </MudAlert>
 }
 else if (NumberRectangleInfo is { IsRectangle: true })
