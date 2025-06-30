@@ -4,37 +4,45 @@
     Rectangles
 </PageTitle>
 
-<MudText Typo="@Typo.h3">
-    Rectangles
+<MudText Typo="@Typo.h4"
+         GutterBottom>
+    Rectangle Dimension Finder
 </MudText>
 
-<MudNumericField @bind-Value="Number"
+<MudNumericField @bind-Value="@Number"
                  @bind-Value:after="@GetRectangleInfo"
-                 Label="Enter a number to find rectangle dimensions"
+                 Label="Enter a number"
                  Variant="@Variant.Outlined"
-                 Margin="@Margin.Dense" />
+                 Margin="@Margin.Normal"
+                 Immediate
+                 Adornment="@Adornment.Start"
+                 AdornmentIcon="@Icons.Material.Filled.Calculate"
+                 Class="mb-4" />
 
 @if (NumberRectangleInfo is { IsRectangle: false })
 {
-    <MudText Typo="@Typo.h2">
-        @Number cannot form any rectangles
-    </MudText>
+    <MudAlert Severity="@Severity.Warning"
+              Elevation="1">
+        @Number cannot form any rectangles with sides ≥ 2 and unequal.
+    </MudAlert>
 }
 else if (NumberRectangleInfo is { IsRectangle: true })
 {
-    <div class="mt-3">
-        <MudText Typo="@Typo.h2">
-            @Number can form the following rectangles:
-        </MudText>
-        <ul>
-            @foreach (var rectangle in NumberRectangleInfo.Value.Dimensions)
-            {
-                <li>
-                    @rectangle.Width x @rectangle.Height
-                </li>
-            }
-        </ul>
-    </div>
+    <MudAlert Severity="@Severity.Success"
+              Elevation="1"
+              Class="mb-2">
+        @Number can form the following rectangles:
+    </MudAlert>
+
+    <MudList T="@string"
+             Dense>
+        @foreach (var rectangle in NumberRectangleInfo.Value.Dimensions)
+        {
+            <MudListItem>
+                @rectangle.Width × @rectangle.Height
+            </MudListItem>
+        }
+    </MudList>
 }
 
 @code {
