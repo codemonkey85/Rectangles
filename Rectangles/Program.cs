@@ -1,5 +1,4 @@
-﻿// Top-level code
-var results = Enumerable.Range(1, 100)
+﻿var results = LongRange(1, 100)
     .Select(RectangleUtils.GetRectangleInfo)
     .Where(info => info.IsRectangle);
 
@@ -8,24 +7,37 @@ foreach (var info in results)
     Console.WriteLine($"{info.Number} can form rectangle(s): {string.Join(", ", info.Dimensions.Select(d => $"{d.Width}x{d.Height}"))}");
 }
 
+static IEnumerable<long> LongRange(long start, long count)
+{
+    for (var i = start; i < start + count; i++)
+    {
+        yield return i;
+    }
+}
 
-public record struct RectanglePair(int Width, int Height);
+public record struct RectanglePair(long Width, long Height);
 
-public record struct RectangleInfo(int Number, List<RectanglePair> Dimensions)
+public record struct RectangleInfo(long Number, List<RectanglePair> Dimensions)
 {
     public readonly bool IsRectangle => Dimensions.Count > 0;
 }
 
 public static class RectangleUtils
 {
-    public static RectangleInfo GetRectangleInfo(int n)
+    public static RectangleInfo GetRectangleInfo(long n)
     {
-        var dimensions = Enumerable.Range(2, (int)Math.Sqrt(n) - 1)
-            .Where(w => n % w == 0)
-            .Select(w => new RectanglePair(w, n / w))
-            .Where(pair => pair.Height >= 2 && pair.Width != pair.Height)
-            .ToList();
-
+        var dimensions = new List<RectanglePair>();
+        for (long w = 2; w * w <= n; w++)
+        {
+            if (n % w == 0)
+            {
+                var h = n / w;
+                if (h >= 2 && h != w)
+                {
+                    dimensions.Add(new RectanglePair(w, h));
+                }
+            }
+        }
         return new RectangleInfo(n, dimensions);
     }
 }
