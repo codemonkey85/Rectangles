@@ -1,0 +1,44 @@
+﻿@page "/"
+
+<PageTitle>
+    Rectangles
+</PageTitle>
+
+<h1>
+    Rectangles
+</h1>
+
+<InputNumber @bind-Value="Number"
+             @bind-Value:after="GetRectangleInfo" />
+
+@if (NumberRectangleInfo is { IsRectangle: false })
+{
+    <h2>
+        @Number cannot form any rectangles
+    </h2>
+}
+else if (NumberRectangleInfo is { IsRectangle: true })
+{
+    <div class="mt-3">
+        <h2>
+            @Number can form the following rectangles:
+        </h2>
+        <ul>
+            @foreach (var rectangle in NumberRectangleInfo.Value.Dimensions)
+            {
+                <li>
+                    @rectangle.Width x @rectangle.Height
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private long Number { get; set; }
+
+    private RectangleInfo? NumberRectangleInfo { get; set; }
+
+    private void GetRectangleInfo() =>
+        NumberRectangleInfo = RectangleUtils.GetRectangleInfo(Number);
+}
